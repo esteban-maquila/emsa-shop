@@ -409,6 +409,51 @@ h3,
     color: var(--text-secondary);
 }
 
+/* Product Reviews */
+.product-reviews {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+}
+
+.stars {
+    color: #FFD700;
+    font-size: 1.1rem;
+}
+
+.review-score {
+    font-weight: 600;
+}
+
+.review-count {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+/* WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25d366;
+    color: #FFF;
+    border-radius: 50px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+}
+
 /* Responsive constraints */
 @media (max-width: 900px) {
     .product-grid {
@@ -426,5 +471,16 @@ h3,
 
     .showcase-text {
         margin-bottom: 40px;
+    }
+    
+    .whatsapp-float {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+    }
+    .whatsapp-float svg {
+        width: 25px;
+        height: 25px;
     }
 }

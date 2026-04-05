@@ -2,11 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const buyBtn = document.getElementById('buy-btn');
     const sizeInputs = document.querySelectorAll('input[name="size"]');
     const errorMsg = document.getElementById('size-error');
+    const urgencyMsg = document.getElementById('urgency-message');
+    const unitsLeft = document.getElementById('units-left');
 
-    // Remove error message when a size is clicked
+    // Remove error message when a size is clicked, and trigger urgency
     sizeInputs.forEach(input => {
         input.addEventListener('change', () => {
             errorMsg.style.display = 'none';
+            if (urgencyMsg) {
+                // Randomize a small number between 2 and 5
+                const randomUnits = Math.floor(Math.random() * 4) + 2;
+                if (unitsLeft) unitsLeft.textContent = randomUnits;
+                urgencyMsg.style.display = 'block';
+            }
         });
     });
 
