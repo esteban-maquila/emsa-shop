@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EMSA | Exclusividad en Negro</title>
+    <meta name="description"
+        content="Descubre la exclusividad y elegancia de la nueva colección EMSA. Diseño minimalista y sofisticado.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <img src="multimedia/emsa/emsa.png" alt="EMSA Logo" class="logo">
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="multimedia/video/vedio%201.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">SILUETA PERFECTA. ELEGANCIA ABSOLUTA.</h1>
+            <p class="hero-subtitle">Descubre la exclusividad del negro con EMSA.</p>
+            <a href="#comprar" class="btn-primary">Descubrir Más</a>
+        </div>
+    </header>
+
+    <div class="full-width-marquee">
+        <div class="marquee-text">🛒 ENVÍO GRATIS 🚚 Y PAGO CONTRA ENTREGA 💵​ &nbsp; &nbsp; &nbsp; &nbsp; 🛒 ENVÍO GRATIS 🚚 Y PAGO CONTRA ENTREGA 💵​ &nbsp; &nbsp; &nbsp; &nbsp; 🛒 ENVÍO GRATIS 🚚 Y PAGO CONTRA ENTREGA 💵​</div>
+    </div>
+
+    <!-- Product Section -->
+    <section id="comprar" class="product-section">
+        <div class="container product-grid">
+            <!-- Gallery -->
+            <div class="product-gallery">
+                <div class="main-image-container">
+                    <img src="multimedia/imagen/leggin1.png" alt="Leggin EMSA" id="main-product-img" class="main-image">
+                </div>
+                <div class="thumbnail-gallery">
+                    <img src="multimedia/imagen/leggin1.png" alt="Thumbnail 1" class="thumbnail active"
+                        onclick="changeImage(this.src)">
+                    <img src="multimedia/imagen/leggin2.png" alt="Thumbnail 2" class="thumbnail"
+                        onclick="changeImage(this.src)">
+                    <img src="multimedia/imagen/leggin3.png" alt="Thumbnail 3" class="thumbnail"
+                        onclick="changeImage(this.src)">
+                    <img src="multimedia/imagen/leggin4.png" alt="Thumbnail 4" class="thumbnail"
+                        onclick="changeImage(this.src)">
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-details">
+                <p class="brand-tag">EMSA EXCLUSIVE</p>
+                <h2 class="product-title">Legging Sculpt y Shape - Black Edition</h2>
+                <p class="product-price">$ 45.000 COP</p>
+
+                <p class="product-description">
+                    Un diseño que redefine la comodidad y la elegancia. Creado con tejidos premium que se
+                    adaptan como una segunda piel, realzando tu figura con cada movimiento.
+                </p>
+
+                <div class="product-specs">
+                    <p><strong>Color:</strong> Noir (Única Edición)</p>
+                </div>
+
+                <!-- Size Selector -->
+                <div class="size-selector">
+                    <h3>Selecciona tu talla <span class="required">*</span></h3>
+                    <div class="sizes">
+                        <input type="radio" id="size-s" name="size" value="S">
+                        <label for="size-s" class="size-btn">S</label>
+
+                        <input type="radio" id="size-m" name="size" value="M">
+                        <label for="size-m" class="size-btn">M</label>
+
+                        <input type="radio" id="size-l" name="size" value="L">
+                        <label for="size-l" class="size-btn">L</label>
+
+                        <input type="radio" id="size-xl" name="size" value="XL">
+                        <label for="size-xl" class="size-btn">XL</label>
+                    </div>
+                    <p id="size-error" class="error-message">Por favor, selecciona una talla para continuar.</p>
+                </div>
+
+                <button id="buy-btn" class="btn-primary buy-btn">Comprar Ahora</button>
+                <div class="shipping-banner"
+                    style="background: #f1f8f5; border-left: 4px solid #000; padding: 15px; margin-top: 20px; font-size: 1rem; color: #111;">
+                    <p style="margin:0;">🚀 <strong>¡ENVÍO GRATIS A NIVEL NACIONAL!</strong> (Todo Colombia)</p>
+                    <p style="margin: 8px 0 0 0; color: #008a44; font-weight: 600;">💵 ¡PAGA EN CASA AL RECIBIR! (Pago
+                        Contra Entrega)</p>
+                </div>
+                <div class="benefits">
+                    <p>✓ Entrega rápida y confiable</p>
+                    <p>✓ Cambios y devoluciones fáciles</p>
+                    <p>✓ Pago 100% Seguro</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detailed Video Showcase Section -->
+    <section class="video-showcase">
+        <div class="container showcase-content">
+            <div class="showcase-text">
+                <h2>Movimiento que fascina.<br>Caída excepcional.</h2>
+                <p>Experimenta la libertad y el estilo inigualable. Nuestro tejido de alta tecnología proporciona una
+                    caída impecable y un ajuste que te acompaña durante todo el día.</p>
+            </div>
+            <div class="showcase-video-container">
+                <video autoplay muted loop playsinline class="showcase-video">
+                    <source src="multimedia/video/vedo%202.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-container">
+            <img src="multimedia/emsa/emsa.png" alt="EMSA Logo" class="footer-logo">
+            <p>&copy; 2026 EMSA. Todos los derechos reservados. Redefiniendo la elegancia femenina.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

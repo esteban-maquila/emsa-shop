@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | EMSA Exclusividad en Negro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="checkout.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="checkout-body">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark">
+        <a href="index.html">
+            <img src="multimedia/emsa/emsa.png" alt="EMSA Logo" class="logo checkout-logo">
+        </a>
+    </nav>
+
+    <!-- Checkout Container -->
+    <main class="checkout-container container">
+        <div class="checkout-form-section">
+            <div class="form-header">
+                <h2>Completa tu pedido</h2>
+                <p>Estás a un paso de la exclusividad.</p>
+            </div>
+
+            <form action="#" method="POST" id="checkout-form">
+
+                <div class="form-group">
+                    <label for="fullName">Nombre Completo <span class="required">*</span></label>
+                    <input type="text" id="fullName" name="fullName" required placeholder="Ingresa tu nombre completo">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="email">Correo Electrónico <span>(Opcional)</span></label>
+                        <input type="email" id="email" name="email" placeholder="ejemplo@correo.com">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="phone">Teléfono / WhatsApp <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" required placeholder="10 dígitos">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="department">Departamento <span class="required">*</span></label>
+                        <select id="department" name="department" required onchange="updateCities()">
+                            <option value="">Seleccione uno...</option>
+                            <option value="Antioquia">Antioquia</option>
+                            <option value="Valle del Cauca">Valle del Cauca</option>
+                            <option value="Cundinamarca">Cundinamarca</option>
+                            <option value="Atlántico">Atlántico</option>
+                            <option value="Bolívar">Bolívar</option>
+                            <option value="Santander">Santander</option>
+                        </select>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="city">Ciudad <span class="required">*</span></label>
+                        <select id="city" name="city" required disabled>
+                            <option value="">Seleccione primero el departamento</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group half-width">
+                        <label for="neighborhood">Barrio <span class="required">*</span></label>
+                        <input type="text" id="neighborhood" name="neighborhood" required placeholder="Ej. El Poblado">
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="address">Dirección de la Residencia <span class="required">*</span></label>
+                        <input type="text" id="address" name="address" required placeholder="Calle, Número, Conjunto/Apto">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary buy-btn submit-btn">Confirmar Pedido</button>
+                <p class="secure-text">🔒 Tus datos están protegidos. Compra 100% segura.</p>
+            </form>
+        </div>
+
+        <div class="order-summary">
+            <h3>Resumen de Pedido</h3>
+            <div class="summary-item">
+                <img src="multimedia/imagen/leggin1.png" alt="Legging" class="summary-img">
+                <div class="summary-details">
+                    <h4>Legging Sculpt & Shape - Black Edition</h4>
+                    <p class="summary-color">Color: Noir</p>
+                    <p class="summary-size">Talla: <span id="display-size" style="font-weight: 600;">Cargando...</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="summary-totals">
+                <div class="total-row">
+                    <span>Subtotal</span>
+                    <span>$980 MXN</span>
+                </div>
+                <div class="total-row">
+                    <span>Envío (Express)</span>
+                    <span>Gratis</span>
+                </div>
+                <hr>
+                <div class="total-row grand-total">
+                    <span>Total a pagar</span>
+                    <span>$980 MXN</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const citiesByDepartment = {
+            "Antioquia": ["Medellín", "Bello", "Itagüí", "Envigado", "Apartadó", "Rionegro", "Turbo", "Caucasia"],
+            "Valle del Cauca": ["Cali", "Buenaventura", "Palmira", "Tuluá", "Yumbo", "Cartago", "Jamundí", "Buga"],
+            "Cundinamarca": ["Bogotá", "Soacha", "Fusagasugá", "Facatativá", "Chía", "Zipaquirá", "Girardot", "Mosquera"],
+            "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Sabanalarga", "Baranoa"],
+            "Bolívar": ["Cartagena", "Magangué", "Turbaco", "El Carmen de Bolívar", "Arjona"],
+            "Santander": ["Bucaramanga", "Floridablanca", "Barrancabermeja", "Girón", "Piedecuesta", "San Gil"]
+        };
+
+        function updateCities() {
+            const departmentSelect = document.getElementById("department");
+            const citySelect = document.getElementById("city");
+            const selectedDepartment = departmentSelect.value;
+            
+            // Clear current options
+            citySelect.innerHTML = '<option value="">Selecciona tu ciudad</option>';
+            
+            if (selectedDepartment && citiesByDepartment[selectedDepartment]) {
+                const cities = citiesByDepartment[selectedDepartment];
+                cities.forEach(city => {
+                    const option = document.createElement("option");
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+                citySelect.disabled = false;
+            } else {
+                citySelect.disabled = true;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get size from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const size = urlParams.get('size');
+
+            if (size) {
+                document.getElementById('display-size').textContent = size;
+            } else {
+                document.getElementById('display-size').textContent = 'No seleccionada';
+            }
+
+            // Simple form handling simulation
+            document.getElementById('checkout-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                alert('¡Gracias por tu pedido! Nos pondremos en contacto contigo pronto.');
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+
+</html>
