@@ -68,9 +68,34 @@
                     <span class="review-count">(+250 compras confirmadas)</span>
                 </div>
                 <div class="price-container">
-                    <p class="product-price">$ 45.000 COP</p>
-                    <p class="old-price">$ 65.000 COP</p>
-                    <span class="discount-tag">Ahorras $ 20.000</span>
+                    <p class="product-price" id="product-price">$ 45.000 COP</p>
+                    <p class="old-price" id="old-price">$ 65.000 COP</p>
+                    <span class="discount-tag" id="discount-tag">Ahorras $ 20.000</span>
+                </div>
+
+                <div class="bundle-selector">
+                    <h3>Elige tu promoción <span class="required">*</span></h3>
+                    <div class="bundle-options" id="bundle-options">
+                        <label class="bundle-option active" data-bundle="1">
+                            <input type="radio" name="bundle" value="1" checked>
+                            <span class="bundle-header">1 unidad</span>
+                            <span class="bundle-price">$45.000 COP</span>
+                            <span class="bundle-meta">Ahorras $20.000 · 31% OFF</span>
+                        </label>
+                        <label class="bundle-option" data-bundle="2">
+                            <input type="radio" name="bundle" value="2">
+                            <span class="bundle-header">2 unidades</span>
+                            <span class="bundle-price">$80.000 COP</span>
+                            <span class="bundle-meta">Ahorras $50.000 · 38% OFF</span>
+                        </label>
+                        <label class="bundle-option recommended" data-bundle="3">
+                            <span class="recommended-badge">RECOMENDADO</span>
+                            <input type="radio" name="bundle" value="3">
+                            <span class="bundle-header">3 unidades</span>
+                            <span class="bundle-price">$105.000 COP</span>
+                            <span class="bundle-meta">Ahorras $90.000 · 46% OFF</span>
+                        </label>
+                    </div>
                 </div>
 
                 <p class="product-description">

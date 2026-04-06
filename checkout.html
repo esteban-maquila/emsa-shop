@@ -95,13 +95,18 @@
                     <p class="summary-color">Color: Noir</p>
                     <p class="summary-size">Talla: <span id="display-size" style="font-weight: 600;">Cargando...</span>
                     </p>
+                    <p class="summary-size">Promoción: <span id="display-bundle" style="font-weight: 600;">1 unidad</span></p>
                 </div>
             </div>
 
             <div class="summary-totals">
                 <div class="total-row">
                     <span>Subtotal</span>
-                    <span>$ 45.000 COP</span>
+                    <span id="subtotal-price">$ 45.000 COP</span>
+                </div>
+                <div class="total-row">
+                    <span>Descuento aplicado</span>
+                    <span id="discount-amount">- $ 20.000 COP</span>
                 </div>
                 <div class="total-row">
                     <span>Envío (Nacional)</span>
@@ -110,7 +115,7 @@
                 <hr>
                 <div class="total-row grand-total">
                     <span>Total a pagar</span>
-                    <span>$ 45.000 COP</span>
+                    <span id="grand-total-price">$ 45.000 COP</span>
                 </div>
             </div>
         </div>
@@ -152,12 +157,27 @@
             // Get size from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const size = urlParams.get('size');
+            const bundle = Number(urlParams.get('bundle') || '1');
+
+            const pricingByBundle = {
+                1: { units: 1, price: 45000, oldPrice: 65000, savings: 20000 },
+                2: { units: 2, price: 80000, oldPrice: 130000, savings: 50000 },
+                3: { units: 3, price: 105000, oldPrice: 195000, savings: 90000 }
+            };
+
+            const selectedBundle = pricingByBundle[bundle] || pricingByBundle[1];
+            const formatCOP = (value) => `$ ${value.toLocaleString('es-CO')} COP`;
 
             if (size) {
                 document.getElementById('display-size').textContent = size;
             } else {
                 document.getElementById('display-size').textContent = 'No seleccionada';
             }
+
+            document.getElementById('display-bundle').textContent = `${selectedBundle.units} ${selectedBundle.units > 1 ? 'unidades' : 'unidad'}`;
+            document.getElementById('subtotal-price').textContent = formatCOP(selectedBundle.oldPrice);
+            document.getElementById('discount-amount').textContent = `- $ ${selectedBundle.savings.toLocaleString('es-CO')} COP`;
+            document.getElementById('grand-total-price').textContent = formatCOP(selectedBundle.price);
 
             // Simple form handling simulation
             document.getElementById('checkout-form').addEventListener('submit', (e) => {
