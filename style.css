@@ -310,6 +310,82 @@ h3,
     border-bottom: 1px solid var(--border-color);
 }
 
+.bundle-selector {
+    margin-bottom: 30px;
+}
+
+.bundle-selector h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.bundle-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.bundle-option {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 14px;
+    display: grid;
+    gap: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    background-color: #fff;
+}
+
+.bundle-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.bundle-option.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+}
+
+.bundle-option.recommended {
+    border-color: #008a44;
+    background: #f4fbf7;
+}
+
+.recommended-badge {
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: #008a44;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.bundle-header {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.bundle-price {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.bundle-meta {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
 /* Size Selector */
 .size-selector {
     margin-bottom: 30px;
