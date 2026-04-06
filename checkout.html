@@ -27,6 +27,7 @@
     <main class="checkout-container container">
         <div class="checkout-form-section">
             <div class="form-header">
+                <a href="index.html" class="back-to-landing" aria-label="Volver a la landing principal">← Volver a la landing</a>
                 <h2>Completa tu pedido</h2>
                 <p>Estás a un paso de la exclusividad.</p>
             </div>
@@ -81,6 +82,11 @@
                     </div>
                 </div>
 
+                <div class="form-group" id="sizes-group">
+                    <label>Selecciona las tallas de tu promoción <span class="required">*</span></label>
+                    <div id="sizes-container"></div>
+                </div>
+
                 <button type="submit" class="btn-primary buy-btn submit-btn">Confirmar Pedido</button>
                 <p class="secure-text">🔒 Tus datos están protegidos. Compra 100% segura.</p>
             </form>
@@ -93,9 +99,11 @@
                 <div class="summary-details">
                     <h4>Legging Sculpt & Shape - Black Edition</h4>
                     <p class="summary-color">Color: Noir</p>
-                    <p class="summary-size">Talla: <span id="display-size" style="font-weight: 600;">Cargando...</span>
-                    </p>
                     <p class="summary-size">Promoción: <span id="display-bundle" style="font-weight: 600;">1 unidad</span></p>
+                    <p class="summary-size">Tallas elegidas:</p>
+                    <ul class="summary-sizes" id="display-sizes-list">
+                        <li>Pendiente por seleccionar</li>
+                    </ul>
                 </div>
             </div>
 
@@ -154,9 +162,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Get size from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
-            const size = urlParams.get('size');
             const bundle = Number(urlParams.get('bundle') || '1');
 
             const pricingByBundle = {
@@ -168,16 +174,63 @@
             const selectedBundle = pricingByBundle[bundle] || pricingByBundle[1];
             const formatCOP = (value) => `$ ${value.toLocaleString('es-CO')} COP`;
 
-            if (size) {
-                document.getElementById('display-size').textContent = size;
-            } else {
-                document.getElementById('display-size').textContent = 'No seleccionada';
+            const sizesContainer = document.getElementById('sizes-container');
+            const sizesList = document.getElementById('display-sizes-list');
+            const availableSizes = ['S', 'M', 'L', 'XL'];
+
+            const renderSizesSummary = () => {
+                const selectedSizes = Array.from(document.querySelectorAll('.legging-size-select'))
+                    .map((select, index) => ({ index: index + 1, value: select.value }))
+                    .filter((item) => item.value);
+
+                if (!selectedSizes.length) {
+                    sizesList.innerHTML = '<li>Pendiente por seleccionar</li>';
+                    return;
+                }
+
+                sizesList.innerHTML = selectedSizes
+                    .map((item) => `<li>Leggin ${item.index}: ${item.value}</li>`)
+                    .join('');
+            };
+
+            for (let i = 1; i <= selectedBundle.units; i += 1) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'size-line-item';
+
+                const fieldLabel = document.createElement('label');
+                fieldLabel.setAttribute('for', `legging-size-${i}`);
+                fieldLabel.textContent = `Talla leggin ${i} *`;
+
+                const select = document.createElement('select');
+                select.id = `legging-size-${i}`;
+                select.name = `leggingSize${i}`;
+                select.required = true;
+                select.className = 'legging-size-select';
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Selecciona talla';
+                select.appendChild(defaultOption);
+
+                availableSizes.forEach((size) => {
+                    const option = document.createElement('option');
+                    option.value = size;
+                    option.textContent = size;
+                    select.appendChild(option);
+                });
+
+                select.addEventListener('change', renderSizesSummary);
+
+                wrapper.appendChild(fieldLabel);
+                wrapper.appendChild(select);
+                sizesContainer.appendChild(wrapper);
             }
 
             document.getElementById('display-bundle').textContent = `${selectedBundle.units} ${selectedBundle.units > 1 ? 'unidades' : 'unidad'}`;
             document.getElementById('subtotal-price').textContent = formatCOP(selectedBundle.oldPrice);
             document.getElementById('discount-amount').textContent = `- $ ${selectedBundle.savings.toLocaleString('es-CO')} COP`;
             document.getElementById('grand-total-price').textContent = formatCOP(selectedBundle.price);
+            renderSizesSummary();
 
             // Simple form handling simulation
             document.getElementById('checkout-form').addEventListener('submit', (e) => {
