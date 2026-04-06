@@ -36,6 +36,21 @@
     margin-bottom: 5px;
 }
 
+.back-to-landing {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.back-to-landing:hover {
+    text-decoration: underline;
+}
+
 .form-header p {
     color: var(--text-secondary);
     margin-bottom: 30px;
@@ -95,6 +110,21 @@ input::placeholder {
     color: var(--text-secondary);
 }
 
+#sizes-container {
+    display: grid;
+    gap: 12px;
+}
+
+.size-line-item {
+    border: 1px solid var(--border-color);
+    padding: 12px;
+    background-color: #fafafa;
+}
+
+.size-line-item label {
+    margin-bottom: 8px;
+}
+
 /* Order Summary */
 .order-summary {
     background: #fdfdfd;
@@ -136,6 +166,12 @@ input::placeholder {
     font-size: 0.85rem;
     color: var(--text-secondary);
     margin-bottom: 5px;
+}
+
+.summary-sizes {
+    margin: 6px 0 0 18px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
 }
 
 .summary-totals {
