@@ -21,6 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (discountTag) {
             discountTag.textContent = `Ahorras $ ${selected.savings.toLocaleString('es-CO')} (${selected.discount}% OFF)`;
         }
+
+        if (buyBtn) {
+            buyBtn.setAttribute('href', `checkout.html?bundle=${bundleValue}`);
+        }
     };
 
     bundleInputs.forEach((input) => {
@@ -34,10 +38,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updatePricingUI(1);
 
-    buyBtn.addEventListener('click', () => {
-        const selectedBundle = document.querySelector('input[name="bundle"]:checked')?.value || '1';
-        window.location.href = `checkout.html?bundle=${selectedBundle}`;
-    });
+    if (buyBtn) {
+        buyBtn.addEventListener('click', (e) => {
+            const selectedBundle = document.querySelector('input[name="bundle"]:checked')?.value || '1';
+            buyBtn.setAttribute('href', `checkout.html?bundle=${selectedBundle}`);
+            const targetHref = buyBtn.getAttribute('href') || 'checkout.html?bundle=1';
+            if (!targetHref) {
+                e.preventDefault();
+            }
+        });
+    }
 
     // Handle thumbnail clicks
     const thumbnails = document.querySelectorAll('.thumbnail');
