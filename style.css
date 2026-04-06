@@ -266,10 +266,35 @@ h3,
     line-height: 1.2;
 }
 
-.product-price {
-    font-size: 1.5rem;
-    font-weight: 600;
+.price-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
     margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.product-price {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.old-price {
+    text-decoration: line-through;
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+}
+
+.discount-tag {
+    background-color: var(--error);
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .product-description {

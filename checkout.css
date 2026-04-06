@@ -179,8 +179,4 @@ hr {
     .half-width {
         width: 100%;
     }
-    
-    .order-summary {
-        order: -1; /* Show summary on top for mobile */
-    }
 }
