@@ -114,15 +114,15 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 90px;
+    height: 80px;
     padding: 0 24px;
+    overflow: visible;
 }
 
 .logo {
-    height: 160px;
+    height: 200px;
     width: auto;
     object-fit: contain;
-    transform: scale(1);
     transition: transform var(--transition);
 }
 
@@ -442,6 +442,14 @@ button {
     border-radius: 4px;
     text-transform: uppercase;
     letter-spacing: 0.3px;
+}
+
+/* Color Selector inside gallery */
+#gallery-color-selector {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
 }
 
 /* Color Selector */
@@ -1281,11 +1289,11 @@ button {
 
 @media (max-width: 768px) {
     .navbar-inner {
-        height: 70px;
+        height: 64px;
     }
 
     .logo {
-        height: 120px;
+        height: 150px;
     }
 
     .hero {
