@@ -11,6 +11,10 @@
 // ─── NÚMERO DE WHATSAPP ────────────────────────────────────
 const WHATSAPP_NUMBER = '573059246318';
 
+// ─── WEB3FORMS API KEY ─────────────────────────────────────
+// Los datos del formulario se almacenan en https://web3forms.com
+const WEB3FORMS_KEY = 'ad6aaa69-682e-490d-823d-3bc00b62a3c5';
+
 // ─── NOMBRE DEL PRODUCTO ───────────────────────────────────
 const PRODUCT_NAME = 'Jogger Premium EMSA';
 
@@ -440,9 +444,9 @@ function initModal() {
         if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
     });
 
-    // Form submit → WhatsApp
+    // Form submit → Web3Forms + WhatsApp
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             // Basic validation
@@ -460,7 +464,7 @@ function initModal() {
                 return;
             }
 
-            // Build WhatsApp message
+            // Gather form data
             const combo = COMBOS[selectedCombo];
             const fname = $('#fname').value;
             const lname = $('#lname').value;
@@ -473,12 +477,51 @@ function initModal() {
             const apto = $('#apto').value;
 
             let sizesInfo = '';
+            let sizesPlain = '';
             for (let i = 1; i <= combo.units; i++) {
                 const size = $(`#size-${i}`)?.value || 'No seleccionada';
                 const color = $(`#color-${i}`)?.value || 'No seleccionado';
                 sizesInfo += `\n  Unidad ${i}: Talla ${size}, Color ${color}`;
+                sizesPlain += `Unidad ${i}: Talla ${size}, Color ${color}. `;
             }
 
+            // Disable button while sending
+            const submitBtn = form.querySelector('.btn-submit');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Enviando...';
+
+            // ─── Send to Web3Forms ─────────────────────────
+            const formData = {
+                access_key: WEB3FORMS_KEY,
+                subject: `Nuevo pedido EMSA — ${combo.label} — ${fname} ${lname}`,
+                from_name: 'EMSA Tienda Online',
+                Producto: PRODUCT_NAME,
+                Promocion: `${combo.label} — ${formatCOP(combo.price)}`,
+                Precio_anterior: formatCOP(combo.oldPrice),
+                Ahorro: formatCOP(combo.savings),
+                Tallas_y_colores: sizesPlain.trim(),
+                Nombre: `${fname} ${lname}`,
+                Celular: phoneVal,
+                Email: email || 'No proporcionado',
+                Departamento: dept,
+                Ciudad: city,
+                Direccion: address,
+                Barrio: neighborhood,
+                Detalles_adicionales: apto || 'N/A'
+            };
+
+            try {
+                await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+            } catch (_) {
+                // Si falla Web3Forms, igual redirigimos a WhatsApp
+            }
+
+            // ─── Redirect to WhatsApp ──────────────────────
             const msg = `¡Hola EMSA! Quiero confirmar mi pedido:
 
 *${PRODUCT_NAME}*
@@ -495,6 +538,10 @@ Pago contra entrega. ¡Gracias!`;
 
             const waURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
             window.open(waURL, '_blank');
+
+            // Restore button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
         });
     }
 }
