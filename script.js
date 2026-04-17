@@ -38,20 +38,20 @@ const COMBOS = {
     2: {
         label: '2 Unidades',
         units: 2,
-        price: 99900,
-        oldPrice: 179800,
-        savings: 79900,
-        discount: 44,
+        price: 89900,
+        oldPrice: 119800,
+        savings: 29900,
+        discount: 25,
         badge: 'MÁS VENDIDO',
         recommended: false
     },
     3: {
         label: '3 Unidades',
         units: 3,
-        price: 129900,
-        oldPrice: 269700,
-        savings: 139800,
-        discount: 52,
+        price: 109900,
+        oldPrice: 170700,
+        savings: 60900,
+        discount: 36,
         badge: 'RECOMENDADO',
         recommended: true
     }
