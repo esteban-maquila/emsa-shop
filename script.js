@@ -163,28 +163,121 @@ document.addEventListener('DOMContentLoaded', () => {
     initStickyCta();
     initWhatsApp();
     initRevealAnimations();
-    initPromoCountdown();
+    initStockAlert();
+    initSocialProofToast();
     updatePricingUI();
 });
 
-// ─── Promo Countdown (cuenta hasta medianoche) ─────────────
-function initPromoCountdown() {
-    const el = document.getElementById('promo-countdown');
-    if (!el) return;
+// ─── Stock Alert (escasez por color) ───────────────────────
+// Mapa determinista color->unidades restantes (3-9) para que el número
+// se mantenga consistente mientras el usuario navega.
+const STOCK_BY_COLOR = {};
+function getStockForColor(name) {
+    if (STOCK_BY_COLOR[name] == null) {
+        // hash simple basado en el nombre para obtener 3-9
+        let h = 0;
+        for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+        STOCK_BY_COLOR[name] = 3 + (h % 7);
+    }
+    return STOCK_BY_COLOR[name];
+}
 
-    const tick = () => {
-        const now = new Date();
-        const end = new Date(now);
-        end.setHours(23, 59, 59, 999);
-        let diff = Math.max(0, end - now);
-        const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
-        diff %= 3600000;
-        const m = String(Math.floor(diff / 60000)).padStart(2, '0');
-        const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
-        el.textContent = `${h}:${m}:${s}`;
+function updateStockAlert() {
+    const countEl = document.getElementById('stock-count');
+    const nameEl = document.getElementById('stock-color-name');
+    const fill = document.getElementById('stock-bar-fill');
+    if (!countEl || !nameEl || !fill) return;
+    const stock = getStockForColor(selectedColor);
+    countEl.textContent = stock;
+    nameEl.textContent = selectedColor;
+    // stock va de 3 a 9 → fill de 18% a 55% (siempre se ve "bajo")
+    const pct = 15 + (stock - 3) * 6;
+    fill.style.width = `${pct}%`;
+}
+
+function initStockAlert() {
+    updateStockAlert();
+    // Re-evaluar cuando cambie el color seleccionado
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.color-swatch')) {
+            // esperar a que selectedColor se actualice en el handler del swatch
+            setTimeout(updateStockAlert, 0);
+        }
+    });
+}
+
+// ─── Social Proof Toast ────────────────────────────────────
+const TOAST_NAMES = [
+    'María', 'Valentina', 'Camila', 'Laura', 'Sofía', 'Daniela', 'Paula',
+    'Andrea', 'Natalia', 'Carolina', 'Juliana', 'Isabella', 'Mariana',
+    'Luisa', 'Diana', 'Alejandra', 'Catalina', 'Manuela', 'Ximena', 'Sara'
+];
+
+function randomPurchase() {
+    const name = TOAST_NAMES[Math.floor(Math.random() * TOAST_NAMES.length)];
+    const initial = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+    const deptKeys = Object.keys(DEPARTMENTS);
+    const dept = deptKeys[Math.floor(Math.random() * deptKeys.length)];
+    const cities = DEPARTMENTS[dept];
+    const city = cities[Math.floor(Math.random() * cities.length)];
+    const comboKeys = Object.keys(COMBOS);
+    const comboKey = comboKeys[Math.floor(Math.random() * comboKeys.length)];
+    const units = COMBOS[comboKey].units;
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const minutesAgo = 1 + Math.floor(Math.random() * 18);
+    return {
+        name: `${name} ${initial}.`,
+        city,
+        qty: `${units} Jogger${units > 1 ? 's' : ''} (${color.name})`,
+        img: color.image,
+        time: minutesAgo === 1 ? 'hace 1 minuto' : `hace ${minutesAgo} minutos`
     };
-    tick();
-    setInterval(tick, 1000);
+}
+
+function initSocialProofToast() {
+    const toast = document.getElementById('social-proof-toast');
+    if (!toast) return;
+    const imgEl = document.getElementById('toast-img');
+    const nameEl = document.getElementById('toast-name');
+    const cityEl = document.getElementById('toast-city');
+    const qtyEl = document.getElementById('toast-qty');
+    const timeEl = document.getElementById('toast-time');
+    const closeBtn = document.getElementById('toast-close');
+
+    let dismissed = false;
+    let hideTimer = null;
+    let nextTimer = null;
+
+    const show = () => {
+        if (dismissed) return;
+        const p = randomPurchase();
+        imgEl.src = p.img;
+        imgEl.alt = p.qty;
+        nameEl.textContent = p.name;
+        cityEl.textContent = p.city;
+        qtyEl.textContent = p.qty;
+        timeEl.textContent = p.time;
+        toast.classList.add('visible');
+        hideTimer = setTimeout(hide, 5500);
+    };
+
+    const hide = () => {
+        toast.classList.remove('visible');
+        if (!dismissed) {
+            // siguiente en 12-22s
+            nextTimer = setTimeout(show, 12000 + Math.random() * 10000);
+        }
+    };
+
+    closeBtn.addEventListener('click', () => {
+        dismissed = true;
+        clearTimeout(hideTimer);
+        clearTimeout(nextTimer);
+        toast.classList.remove('visible');
+    });
+
+    // primer toast a los 8s para no molestar al entrar
+    setTimeout(show, 8000);
 }
 
 // ─── Color Swatches ────────────────────────────────────────
