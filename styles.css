@@ -156,6 +156,73 @@ button {
     z-index: 0;
 }
 
+.promo-ribbon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 5px 14px;
+    background: linear-gradient(90deg, #b71c1c 0%, #d32f2f 50%, #b71c1c 100%);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    animation: promoPulse 2s ease-in-out infinite;
+}
+
+.promo-ribbon-icon {
+    font-size: 0.9rem;
+    animation: promoShake 1.2s ease-in-out infinite;
+}
+
+.promo-ribbon-timer {
+    background: #fff;
+    color: #b71c1c;
+    padding: 1px 8px;
+    border-radius: 3px;
+    font-family: 'Inter', sans-serif;
+    font-variant-numeric: tabular-nums;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    min-width: 78px;
+    display: inline-block;
+}
+
+@keyframes promoPulse {
+    0%, 100% { filter: brightness(1); }
+    50%      { filter: brightness(1.15); }
+}
+
+@keyframes promoShake {
+    0%, 100%      { transform: rotate(0deg); }
+    25%           { transform: rotate(-12deg); }
+    75%           { transform: rotate(12deg); }
+}
+
+@media (max-width: 480px) {
+    .promo-ribbon {
+        font-size: 0.62rem;
+        letter-spacing: 0.4px;
+        padding: 4px 10px;
+        gap: 5px;
+    }
+    .promo-ribbon-timer {
+        font-size: 0.68rem;
+        padding: 1px 6px;
+        min-width: 68px;
+    }
+}
+
 .hero-overlay {
     position: absolute;
     inset: 0;
@@ -647,6 +714,7 @@ button {
 }
 
 .transportadoras img {
+    width: 100%;
     border-radius: var(--radius);
     max-height: 120px;
     object-fit: contain;

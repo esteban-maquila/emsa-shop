@@ -163,8 +163,29 @@ document.addEventListener('DOMContentLoaded', () => {
     initStickyCta();
     initWhatsApp();
     initRevealAnimations();
+    initPromoCountdown();
     updatePricingUI();
 });
+
+// ─── Promo Countdown (cuenta hasta medianoche) ─────────────
+function initPromoCountdown() {
+    const el = document.getElementById('promo-countdown');
+    if (!el) return;
+
+    const tick = () => {
+        const now = new Date();
+        const end = new Date(now);
+        end.setHours(23, 59, 59, 999);
+        let diff = Math.max(0, end - now);
+        const h = String(Math.floor(diff / 3600000)).padStart(2, '0');
+        diff %= 3600000;
+        const m = String(Math.floor(diff / 60000)).padStart(2, '0');
+        const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+        el.textContent = `${h}:${m}:${s}`;
+    };
+    tick();
+    setInterval(tick, 1000);
+}
 
 // ─── Color Swatches ────────────────────────────────────────
 const imageCache = new Map();
