@@ -155,7 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initColorSwatches();
     initBundles();
     initModalBundles();
-    initThumbnails();
+    initProductCarousel();
     initTestimonials();
     initDepartments();
     initModal();
@@ -482,20 +482,48 @@ function renderModalSizes() {
     }
 }
 
-// ─── Thumbnails ────────────────────────────────────────────
-function initThumbnails() {
-    const thumbs = $$('.thumb');
-    const mainImg = $('#main-product-img');
-    if (!thumbs.length || !mainImg) return;
+// ─── Product Carousel (auto-scroll) ────────────────────────
+function initProductCarousel() {
+    const track = document.getElementById('product-carousel-track');
+    const dotsContainer = document.getElementById('product-carousel-dots');
+    if (!track || !dotsContainer) return;
 
-    thumbs.forEach(thumb => {
-        if (thumb.dataset.src) preloadImage(thumb.dataset.src);
-        thumb.addEventListener('click', () => {
-            thumbs.forEach(t => t.classList.remove('active'));
-            thumb.classList.add('active');
-            swapMainImage(thumb.dataset.src);
-        });
+    const slides = track.querySelectorAll('.product-carousel-slide');
+    if (!slides.length) return;
+
+    let current = 0;
+    let autoTimer = null;
+
+    // crear dots
+    slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = `product-carousel-dot${i === 0 ? ' active' : ''}`;
+        dot.setAttribute('aria-label', `Ir a imagen ${i + 1}`);
+        dot.addEventListener('click', () => goTo(i, true));
+        dotsContainer.appendChild(dot);
     });
+
+    const dots = dotsContainer.querySelectorAll('.product-carousel-dot');
+
+    const goTo = (index, manual = false) => {
+        current = (index + slides.length) % slides.length;
+        track.style.transform = `translateX(-${current * 100}%)`;
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+        if (manual) restartAuto();
+    };
+
+    const next = () => goTo(current + 1);
+
+    const startAuto = () => { autoTimer = setInterval(next, 3500); };
+    const stopAuto = () => { if (autoTimer) clearInterval(autoTimer); };
+    const restartAuto = () => { stopAuto(); startAuto(); };
+
+    // pausar al pasar el mouse
+    const carousel = document.getElementById('product-carousel');
+    carousel.addEventListener('mouseenter', stopAuto);
+    carousel.addEventListener('mouseleave', startAuto);
+
+    startAuto();
 }
 
 // ─── Testimonials ──────────────────────────────────────────
