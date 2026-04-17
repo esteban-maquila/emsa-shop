@@ -167,9 +167,44 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ─── Color Swatches ────────────────────────────────────────
+const imageCache = new Map();
+
+function preloadImage(src) {
+    if (imageCache.has(src)) return imageCache.get(src);
+    const img = new Image();
+    img.src = src;
+    imageCache.set(src, img);
+    return img;
+}
+
+function swapMainImage(src) {
+    const mainImg = $('#main-product-img');
+    if (!mainImg) return;
+    const current = mainImg.getAttribute('src');
+    if (current && current.endsWith(src)) return;
+
+    const preload = preloadImage(src);
+    const doSwap = () => {
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+            mainImg.src = src;
+            mainImg.style.opacity = '1';
+        }, 200);
+    };
+    if (preload.complete && preload.naturalWidth > 0) {
+        doSwap();
+    } else {
+        preload.addEventListener('load', doSwap, { once: true });
+        preload.addEventListener('error', doSwap, { once: true });
+    }
+}
+
 function initColorSwatches() {
     const container = $('#color-swatches');
     if (!container) return;
+
+    // Precarga todas las imágenes de color para evitar parpadeo al cambiar swatch
+    COLORS.forEach(color => preloadImage(color.image));
 
     COLORS.forEach((color, i) => {
         const btn = document.createElement('button');
@@ -181,17 +216,12 @@ function initColorSwatches() {
             btn.style.border = '2px solid #ddd';
         }
         btn.addEventListener('click', () => {
+            if (selectedColor === color.name) return;
             $$('.color-swatch').forEach(s => s.classList.remove('active'));
             btn.classList.add('active');
             selectedColor = color.name;
             $('#selected-color-name').textContent = color.name;
-            // Update main image to color image
-            const mainImg = $('#main-product-img');
-            mainImg.style.opacity = '0';
-            setTimeout(() => {
-                mainImg.src = color.image;
-                mainImg.style.opacity = '1';
-            }, 200);
+            swapMainImage(color.image);
         });
         container.appendChild(btn);
     });
@@ -345,14 +375,11 @@ function initThumbnails() {
     if (!thumbs.length || !mainImg) return;
 
     thumbs.forEach(thumb => {
+        if (thumb.dataset.src) preloadImage(thumb.dataset.src);
         thumb.addEventListener('click', () => {
             thumbs.forEach(t => t.classList.remove('active'));
             thumb.classList.add('active');
-            mainImg.style.opacity = '0';
-            setTimeout(() => {
-                mainImg.src = thumb.dataset.src;
-                mainImg.style.opacity = '1';
-            }, 200);
+            swapMainImage(thumb.dataset.src);
         });
     });
 }
