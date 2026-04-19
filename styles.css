@@ -914,6 +914,27 @@ button {
     color: var(--text-light) !important;
 }
 
+.footer-legal {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+
+.footer-legal a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer-legal a:hover {
+    color: var(--gold);
+    text-decoration: underline;
+}
+
 /* ==========================================================
    Sticky CTA (Mobile)
    ========================================================== */
