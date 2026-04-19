@@ -9,7 +9,7 @@
    ========================================================== */
 
 // ─── NÚMERO DE WHATSAPP ────────────────────────────────────
-const WHATSAPP_NUMBER = '573059246318';
+const WHATSAPP_NUMBER = '573234933812';
 
 // ─── WEB3FORMS API KEY ─────────────────────────────────────
 // Los datos del formulario se almacenan en https://web3forms.com
@@ -593,6 +593,15 @@ function initModal() {
         updatePricingUI();
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'InitiateCheckout', {
+                content_name: PRODUCT_NAME,
+                content_type: 'product',
+                currency: 'COP',
+                value: COMBOS[selectedCombo].price,
+                num_items: COMBOS[selectedCombo].units
+            });
+        }
     };
 
     const closeModal = () => {
@@ -690,6 +699,17 @@ function initModal() {
                 // Si falla Web3Forms, igual redirigimos a WhatsApp
             }
 
+            // ─── Meta Pixel: Lead ──────────────────────────
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'Lead', {
+                    content_name: PRODUCT_NAME,
+                    content_type: 'product',
+                    currency: 'COP',
+                    value: combo.price,
+                    num_items: combo.units
+                });
+            }
+
             // ─── Redirect to WhatsApp ──────────────────────
             const msg = `¡Hola EMSA! Quiero confirmar mi pedido:
 
@@ -745,6 +765,15 @@ function initWhatsApp() {
 
     const msg = `Hola EMSA, tengo una duda sobre el ${PRODUCT_NAME}`;
     waBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
+
+    waBtn.addEventListener('click', () => {
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'Contact', {
+                content_name: PRODUCT_NAME,
+                content_category: 'WhatsApp Float Button'
+            });
+        }
+    });
 }
 
 // ─── Reveal on Scroll ──────────────────────────────────────
