@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Gracias por tu pedido! | EMSA</title>
+    <meta name="description" content="Tu pedido EMSA ha sido recibido. En unos minutos te contactaremos por WhatsApp para confirmar.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="multimedia/imagen/material visual tienda/ems_sin_fondo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Meta Pixel base -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1169204614256465');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1169204614256465&ev=PageView&noscript=1"/></noscript>
+
+    <style>
+        .ty-section {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #fcfcfc 0%, #f4fbf7 100%);
+        }
+
+        .ty-card {
+            max-width: 580px;
+            width: 100%;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            animation: tyFadeIn 0.6s ease-out;
+        }
+
+        @keyframes tyFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .ty-check {
+            width: 88px;
+            height: 88px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #008a44, #00b85a);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 24px rgba(0, 138, 68, 0.3);
+            animation: tyPop 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes tyPop {
+            from { opacity: 0; transform: scale(0.5); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        .ty-check svg {
+            width: 48px;
+            height: 48px;
+            color: #fff;
+        }
+
+        .ty-card h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--text);
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+
+        .ty-card .ty-lead {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            line-height: 1.6;
+        }
+
+        .ty-order-box {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            margin-bottom: 28px;
+            text-align: left;
+            display: none;
+        }
+
+        .ty-order-box.visible {
+            display: block;
+        }
+
+        .ty-order-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            font-size: 0.92rem;
+        }
+
+        .ty-order-row:not(:last-child) {
+            border-bottom: 1px dashed var(--border);
+        }
+
+        .ty-order-row span:first-child {
+            color: var(--text-secondary);
+        }
+
+        .ty-order-row span:last-child {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .ty-order-total {
+            margin-top: 8px;
+            padding-top: 12px !important;
+            border-top: 2px solid var(--border) !important;
+            border-bottom: none !important;
+        }
+
+        .ty-order-total span:last-child {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            color: var(--accent);
+        }
+
+        .ty-steps {
+            text-align: left;
+            background: #fff7e6;
+            border: 1px solid rgba(197, 165, 90, 0.3);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            margin-bottom: 28px;
+        }
+
+        .ty-steps h3 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .ty-steps ol {
+            padding-left: 0;
+            list-style: none;
+            counter-reset: ty-counter;
+        }
+
+        .ty-steps li {
+            counter-increment: ty-counter;
+            position: relative;
+            padding-left: 36px;
+            margin-bottom: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .ty-steps li::before {
+            content: counter(ty-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.78rem;
+        }
+
+        .ty-actions {
+            display: flex;
+            gap: 12px;
+            flex-direction: column;
+        }
+
+        .ty-btn-wa {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 16px 24px;
+            background: var(--whatsapp);
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border-radius: var(--radius);
+            transition: all var(--transition);
+            box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+        }
+
+        .ty-btn-wa:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+        }
+
+        .ty-btn-home {
+            display: inline-block;
+            padding: 14px 24px;
+            color: var(--accent);
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            transition: all var(--transition);
+        }
+
+        .ty-btn-home:hover {
+            background: var(--bg-alt);
+            border-color: var(--accent);
+        }
+
+        .ty-disclaimer {
+            margin-top: 24px;
+            font-size: 0.78rem;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .ty-card {
+                padding: 36px 24px;
+            }
+            .ty-card h1 {
+                font-size: 1.7rem;
+            }
+            .ty-card .ty-lead {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="index.html" aria-label="Volver al inicio">
+                <img src="multimedia/imagen/material visual tienda/ems_sin_fondo.png" alt="EMSA Logo" class="logo">
+            </a>
+        </div>
+    </nav>
+
+    <!-- Thank You Section -->
+    <section class="ty-section">
+        <div class="ty-card">
+            <div class="ty-check">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                </svg>
+            </div>
+
+            <h1>¡Gracias por tu pedido!</h1>
+            <p class="ty-lead">Hemos recibido tu solicitud correctamente. <strong>En unos minutos uno de nuestros asesores te contactará por WhatsApp</strong> para confirmar los detalles del envío.</p>
+
+            <div class="ty-order-box" id="ty-order-box">
+                <div class="ty-order-row">
+                    <span>Producto</span>
+                    <span id="ty-product">Jogger Premium EMSA</span>
+                </div>
+                <div class="ty-order-row">
+                    <span>Promoción</span>
+                    <span id="ty-combo">1 Unidad</span>
+                </div>
+                <div class="ty-order-row ty-order-total">
+                    <span>Total a pagar al recibir</span>
+                    <span id="ty-total">$59.900</span>
+                </div>
+            </div>
+
+            <div class="ty-steps">
+                <h3>¿Qué sigue ahora?</h3>
+                <ol>
+                    <li>Te contactaremos por WhatsApp en los próximos minutos para confirmar tu pedido.</li>
+                    <li>Despachamos en menos de 24 horas. Llegará a tu casa en 2 a 5 días hábiles.</li>
+                    <li>Pagas en efectivo al transportador cuando recibas tu paquete. ¡Sin riesgos!</li>
+                </ol>
+            </div>
+
+            <div class="ty-actions">
+                <a id="ty-wa-link" href="https://wa.me/573234933812" target="_blank" rel="noopener noreferrer" class="ty-btn-wa">
+                    <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/>
+                    </svg>
+                    Abrir WhatsApp
+                </a>
+                <a href="index.html" class="ty-btn-home">Volver a la tienda</a>
+            </div>
+
+            <p class="ty-disclaimer">Si en 30 minutos no recibes mensaje, escríbenos directamente al WhatsApp.</p>
+        </div>
+    </section>
+
+    <script>
+        // Lee parámetros del pedido y dispara Purchase event
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const value = parseInt(params.get('value') || '0', 10);
+            const units = parseInt(params.get('units') || '1', 10);
+            const combo = params.get('combo') || '';
+            const orderId = params.get('oid') || ('emsa-' + Date.now());
+
+            // Mostrar resumen si hay datos válidos
+            if (value > 0) {
+                const box = document.getElementById('ty-order-box');
+                const elCombo = document.getElementById('ty-combo');
+                const elTotal = document.getElementById('ty-total');
+                if (combo && elCombo) elCombo.textContent = combo;
+                if (elTotal) elTotal.textContent = '$' + value.toLocaleString('es-CO');
+                if (box) box.classList.add('visible');
+            }
+
+            // Dispara Meta Pixel Purchase con valor real
+            // Anti-doble-disparo: marca el orderId en sessionStorage
+            const firedKey = 'emsa_purchase_fired_' + orderId;
+            if (value > 0 && !sessionStorage.getItem(firedKey)) {
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Purchase', {
+                        value: value,
+                        currency: 'COP',
+                        content_name: 'Jogger Premium EMSA',
+                        content_type: 'product',
+                        content_ids: ['EMSA-JOGGER-001'],
+                        num_items: units,
+                        order_id: orderId
+                    });
+                }
+                sessionStorage.setItem(firedKey, '1');
+            }
+        })();
+    </script>
+
+</body>
+
+</html>

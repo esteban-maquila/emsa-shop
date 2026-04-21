@@ -161,8 +161,229 @@ document.addEventListener('DOMContentLoaded', () => {
     initRevealAnimations();
     initStockAlert();
     initSocialProofToast();
+    initCountdown();
+    initSizeGuide();
+    initLightbox();
+    initCheckoutProgress();
     updatePricingUI();
 });
+
+// ─── Countdown Timer (urgencia de oferta) ──────────────────
+// Persiste en localStorage por 12 horas. Al llegar a cero,
+// se reinicia automáticamente para no romper la oferta.
+const COUNTDOWN_DURATION_MS = 12 * 60 * 60 * 1000; // 12h
+const COUNTDOWN_KEY = 'emsa_offer_end_v1';
+
+function initCountdown() {
+    const h = document.getElementById('cd-h');
+    const m = document.getElementById('cd-m');
+    const s = document.getElementById('cd-s');
+    if (!h || !m || !s) return;
+
+    let endAt = parseInt(localStorage.getItem(COUNTDOWN_KEY) || '0', 10);
+    const now = Date.now();
+    if (!endAt || endAt < now) {
+        endAt = now + COUNTDOWN_DURATION_MS;
+        localStorage.setItem(COUNTDOWN_KEY, String(endAt));
+    }
+
+    const pad = (n) => String(n).padStart(2, '0');
+
+    const tick = () => {
+        const diff = endAt - Date.now();
+        if (diff <= 0) {
+            // reinicia para mantener urgencia
+            endAt = Date.now() + COUNTDOWN_DURATION_MS;
+            localStorage.setItem(COUNTDOWN_KEY, String(endAt));
+        }
+        const total = Math.max(0, endAt - Date.now());
+        const hh = Math.floor(total / (1000 * 60 * 60));
+        const mm = Math.floor((total / (1000 * 60)) % 60);
+        const ss = Math.floor((total / 1000) % 60);
+        h.textContent = pad(hh);
+        m.textContent = pad(mm);
+        s.textContent = pad(ss);
+    };
+
+    tick();
+    setInterval(tick, 1000);
+}
+
+// ─── Size Guide Modal ──────────────────────────────────────
+function initSizeGuide() {
+    const modal = document.getElementById('size-guide-modal');
+    const openers = [
+        document.getElementById('size-guide-link'),
+        document.getElementById('faq-size-guide-link')
+    ].filter(Boolean);
+    const closeBtn = document.getElementById('size-guide-close');
+    if (!modal || !openers.length) return;
+
+    const open = (e) => {
+        if (e) e.preventDefault();
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+    const close = () => {
+        modal.classList.remove('open');
+        document.body.style.overflow = '';
+    };
+
+    openers.forEach(o => o.addEventListener('click', open));
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) close();
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('open')) close();
+    });
+}
+
+// ─── Lightbox (zoom de galería) ────────────────────────────
+function initLightbox() {
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+    const lbClose = document.getElementById('lightbox-close');
+    const lbPrev = document.getElementById('lightbox-prev');
+    const lbNext = document.getElementById('lightbox-next');
+    const lbCurrent = document.getElementById('lightbox-current');
+    const lbTotal = document.getElementById('lightbox-total');
+    if (!lb || !lbImg) return;
+
+    // Construye lista dinámica: imagen del color actual + slides del carrusel
+    const carouselImgs = Array.from(document.querySelectorAll('#product-carousel-track img'))
+        .map(img => ({ src: img.getAttribute('src'), alt: img.getAttribute('alt') || '' }));
+
+    let images = [];
+    let index = 0;
+
+    const buildImages = () => {
+        const main = document.getElementById('main-product-img');
+        const mainSrc = main ? main.getAttribute('src') : null;
+        images = mainSrc
+            ? [{ src: mainSrc, alt: main.getAttribute('alt') || '' }, ...carouselImgs]
+            : carouselImgs.slice();
+        if (lbTotal) lbTotal.textContent = String(images.length);
+    };
+
+    const render = () => {
+        if (!images.length) return;
+        index = (index + images.length) % images.length;
+        lbImg.src = images[index].src;
+        lbImg.alt = images[index].alt;
+        if (lbCurrent) lbCurrent.textContent = String(index + 1);
+    };
+
+    const open = (startIdx = 0) => {
+        buildImages();
+        if (!images.length) return;
+        index = startIdx;
+        render();
+        lb.classList.add('open');
+        lb.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+    };
+
+    const close = () => {
+        lb.classList.remove('open');
+        lb.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+    };
+
+    // Click en imagen principal abre lightbox
+    const mainImg = document.getElementById('main-product-img');
+    if (mainImg) mainImg.addEventListener('click', () => open(0));
+
+    // Click en slides del carrusel también abre
+    document.querySelectorAll('#product-carousel-track img').forEach((img, i) => {
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', () => open(i + 1));
+    });
+
+    if (lbClose) lbClose.addEventListener('click', close);
+    if (lbPrev) lbPrev.addEventListener('click', () => { index--; render(); });
+    if (lbNext) lbNext.addEventListener('click', () => { index++; render(); });
+
+    lb.addEventListener('click', (e) => {
+        if (e.target === lb) close();
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') { index--; render(); }
+        if (e.key === 'ArrowRight') { index++; render(); }
+    });
+
+    // Swipe en mobile
+    let touchStartX = 0;
+    lb.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    lb.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(diff) > 50) {
+            if (diff < 0) { index++; } else { index--; }
+            render();
+        }
+    });
+}
+
+// ─── Checkout Progress (paso visual del modal) ─────────────
+function initCheckoutProgress() {
+    const form = document.getElementById('checkout-form');
+    if (!form) return;
+
+    const steps = document.querySelectorAll('.cp-step');
+    const fill1 = document.getElementById('cp-bar-fill');
+    const fill2 = document.getElementById('cp-bar-fill-2');
+    if (!steps.length) return;
+
+    const setStep = (n) => {
+        steps.forEach(s => {
+            const step = parseInt(s.dataset.step);
+            s.classList.remove('active', 'completed');
+            if (step < n) s.classList.add('completed');
+            if (step === n) s.classList.add('active');
+        });
+        if (fill1) fill1.style.width = n >= 2 ? '100%' : '0%';
+        if (fill2) fill2.style.width = n >= 3 ? '100%' : '0%';
+    };
+
+    // Paso 1 al abrir modal (producto seleccionado)
+    // Cuando el usuario empieza a llenar el form → paso 2
+    const firstInput = form.querySelector('input, select');
+    let promotedToStep2 = false;
+    form.addEventListener('focusin', () => {
+        if (!promotedToStep2) {
+            setStep(2);
+            promotedToStep2 = true;
+        }
+    });
+
+    // Cuando todos los campos requeridos están completos → paso 3
+    const checkCompleteness = () => {
+        const required = form.querySelectorAll('[required]');
+        const allFilled = Array.from(required).every(el => el.value && el.value.trim() !== '');
+        if (allFilled) setStep(3);
+        else if (promotedToStep2) setStep(2);
+    };
+
+    form.addEventListener('input', checkCompleteness);
+    form.addEventListener('change', checkCompleteness);
+
+    // Reset al abrir modal nuevo
+    const modal = document.getElementById('checkout-modal');
+    if (modal) {
+        const observer = new MutationObserver(() => {
+            if (!modal.classList.contains('open')) {
+                promotedToStep2 = false;
+                setStep(1);
+            }
+        });
+        observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
+    }
+}
 
 // ─── Stock Alert (escasez por color) ───────────────────────
 // Mapa determinista color->unidades restantes (3-9) para que el número
@@ -321,6 +542,7 @@ function initColorSwatches() {
         btn.className = `color-swatch${i === 0 ? ' active' : ''}`;
         btn.style.backgroundColor = color.hex;
         btn.title = color.name;
+        btn.dataset.name = color.name;
         btn.setAttribute('aria-label', color.name);
         if (color.hex === '#f5f5f0' || color.hex === '#f5e6d3') {
             btn.style.border = '2px solid #ddd';
@@ -371,6 +593,11 @@ function initBundles() {
             updatePricingUI();
             syncModalBundle();
             renderModalSizes();
+            // Auto-abrir el checkout al seleccionar una promoción
+            setTimeout(() => {
+                const btnBuy = document.getElementById('btn-buy');
+                if (btnBuy) btnBuy.click();
+            }, 280);
         });
 
         container.appendChild(card);
@@ -724,7 +951,22 @@ Pago contra entrega. ¡Gracias!`;
             const waURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
             window.open(waURL, '_blank');
 
-            // Restore button
+            // ─── Redirect a página de gracias ──────────────
+            // Pasamos los datos por query para que gracias.html dispare
+            // el Purchase event con el valor real y muestre el resumen.
+            const orderId = 'emsa-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            const params = new URLSearchParams({
+                value: combo.price,
+                units: combo.units,
+                combo: combo.label,
+                oid: orderId
+            });
+            // Pequeño delay para que el window.open de WhatsApp no compita con la redirección
+            setTimeout(() => {
+                window.location.href = `gracias.html?${params.toString()}`;
+            }, 300);
+
+            // Restore button (por si el usuario cancela)
             submitBtn.disabled = false;
             submitBtn.innerHTML = originalText;
         });
