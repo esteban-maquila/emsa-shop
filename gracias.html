@@ -279,8 +279,8 @@
                 </svg>
             </div>
 
-            <h1>¡Gracias por tu pedido!</h1>
-            <p class="ty-lead">Hemos recibido tu solicitud correctamente. <strong>En unos minutos uno de nuestros asesores te contactará por WhatsApp</strong> para confirmar los detalles del envío.</p>
+            <h1 id="ty-title">¡Tu pedido está casi listo!</h1>
+            <p class="ty-lead">Solo falta <strong>un último paso</strong>: pulsa el botón de abajo para <strong>confirmar tu pedido por WhatsApp</strong> y que validemos los detalles de envío.</p>
 
             <div class="ty-order-box" id="ty-order-box">
                 <div class="ty-order-row">
@@ -300,7 +300,7 @@
             <div class="ty-steps">
                 <h3>¿Qué sigue ahora?</h3>
                 <ol>
-                    <li>Te contactaremos por WhatsApp en los próximos minutos para confirmar tu pedido.</li>
+                    <li><strong>Pulsa el botón verde</strong> de WhatsApp para enviarnos tu pedido y confirmarlo con un asesor.</li>
                     <li>Despachamos en menos de 24 horas. Llegará a tu casa en 2 a 5 días hábiles.</li>
                     <li>Pagas en efectivo al transportador cuando recibas tu paquete. ¡Sin riesgos!</li>
                 </ol>
@@ -311,12 +311,12 @@
                     <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                         <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592z"/>
                     </svg>
-                    Abrir WhatsApp
+                    CONFIRMAR PEDIDO POR WHATSAPP
                 </a>
                 <a href="index.html" class="ty-btn-home">Volver a la tienda</a>
             </div>
 
-            <p class="ty-disclaimer">Si en 30 minutos no recibes mensaje, escríbenos directamente al WhatsApp.</p>
+            <p class="ty-disclaimer">Al pulsar el botón se abrirá WhatsApp con tu pedido ya redactado. Solo tienes que enviarlo.</p>
         </div>
     </section>
 
@@ -328,6 +328,21 @@
             const units = parseInt(params.get('units') || '1', 10);
             const combo = params.get('combo') || '';
             const orderId = params.get('oid') || ('emsa-' + Date.now());
+
+            // Recupera la URL de WhatsApp guardada en el formulario y la asigna al botón
+            try {
+                const waURL = sessionStorage.getItem('emsa_wa_url_' + orderId);
+                if (waURL) {
+                    const waLink = document.getElementById('ty-wa-link');
+                    if (waLink) waLink.href = waURL;
+                }
+                // Personaliza el título con el nombre del cliente
+                const fname = sessionStorage.getItem('emsa_customer_name_' + orderId);
+                if (fname) {
+                    const title = document.getElementById('ty-title');
+                    if (title) title.textContent = '¡' + fname + ', tu pedido está casi listo!';
+                }
+            } catch (_) { /* Safari modo privado */ }
 
             // Mostrar resumen si hay datos válidos
             if (value > 0) {

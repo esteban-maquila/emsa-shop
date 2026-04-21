@@ -933,7 +933,7 @@ function initModal() {
                 });
             }
 
-            // ─── Redirect to WhatsApp ──────────────────────
+            // ─── Construir URL de WhatsApp (no se abre aquí) ──
             const msg = `¡Hola EMSA! Quiero confirmar mi pedido:
 
 *${PRODUCT_NAME}*
@@ -949,26 +949,24 @@ Barrio: ${neighborhood}${apto ? '\nDetalles: ' + apto : ''}
 Pago contra entrega. ¡Gracias!`;
 
             const waURL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-            window.open(waURL, '_blank');
 
-            // ─── Redirect a página de gracias ──────────────
-            // Pasamos los datos por query para que gracias.html dispare
-            // el Purchase event con el valor real y muestre el resumen.
+            // ─── Guardar URL de WhatsApp para gracias.html ──
+            // Usamos sessionStorage en vez de query params porque el mensaje
+            // de WhatsApp puede ser largo y los URL tienen límites.
             const orderId = 'emsa-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            try {
+                sessionStorage.setItem('emsa_wa_url_' + orderId, waURL);
+                sessionStorage.setItem('emsa_customer_name_' + orderId, fname);
+            } catch (_) { /* Safari modo privado */ }
+
+            // ─── Redirigir a página de gracias ──────────────
             const params = new URLSearchParams({
                 value: combo.price,
                 units: combo.units,
                 combo: combo.label,
                 oid: orderId
             });
-            // Pequeño delay para que el window.open de WhatsApp no compita con la redirección
-            setTimeout(() => {
-                window.location.href = `gracias.html?${params.toString()}`;
-            }, 300);
-
-            // Restore button (por si el usuario cancela)
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
+            window.location.href = `gracias.html?${params.toString()}`;
         });
     }
 }
