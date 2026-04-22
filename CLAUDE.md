@@ -50,11 +50,21 @@ multimedia/
 ├── imagen/
 │   ├── colores productos/    ← 10 color variant photos (one per COLORS entry)
 │   ├── material visual producto/  ← Product shots, testimonials, transportadoras
+│   │   ├── detalle.jpg           ← Full-width detail image (replaces benefits grid)
+│   │   └── detalle producto.png  ← Alternate detail shot (used in schema)
 │   └── material visual tienda/    ← Brand logos
 └── video/
-    ├── hero.mp4              ← Hero section background
+    ├── hero.mp4              ← Hero section background (compressed, 739 KB)
+    ├── hero_original.mp4     ← Original backup before compression (5 MB)
     └── Jogger_En_Calle.mp4   ← Video showcase section
 ```
+
+## UI Decisions
+
+- **Sticky CTA button** (`#btn-sticky`): floats 14px from sides and bottom, rounded corners, subtle opacity blink animation (`sticky-blink`). Not full-width edge-to-edge.
+- **Social proof toast** (`#social-proof-toast`): appears top-left (not bottom-left). Slides in from above.
+- **Benefits section replaced**: the 4-card grid (Tela Premium, Cintura Ajustable, etc.) was removed and replaced with `.detalle-section` showing `detalle.jpg` full-width centered image.
+- **Hero video**: uses `object-fit: contain` (not `cover`) so the full video frame is visible without cropping. Hero background is `#000`. Video has `preload="metadata"`.
 
 ## Deployment
 
