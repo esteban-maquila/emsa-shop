@@ -593,11 +593,6 @@ function initBundles() {
             updatePricingUI();
             syncModalBundle();
             renderModalSizes();
-            // Auto-abrir el checkout al seleccionar una promoción
-            setTimeout(() => {
-                const btnBuy = document.getElementById('btn-buy');
-                if (btnBuy) btnBuy.click();
-            }, 280);
         });
 
         container.appendChild(card);

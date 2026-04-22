@@ -217,7 +217,7 @@
 
     <!-- Hero Section -->
     <header class="hero" id="inicio">
-        <video autoplay muted loop playsinline class="hero-video">
+        <video autoplay muted loop playsinline preload="metadata" class="hero-video">
             <source src="multimedia/video/hero.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
@@ -404,39 +404,10 @@
         </div>
     </section>
 
-    <!-- Benefits -->
-    <section class="benefits-section">
+    <!-- Detalle imagen -->
+    <section class="detalle-section" data-reveal>
         <div class="container">
-            <div class="benefits-grid">
-                <div class="benefit-card" data-reveal>
-                    <div class="benefit-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-                    </div>
-                    <h4>Tela Premium</h4>
-                    <p>Mezcla de algodón y poliéster de alta calidad. Suavidad y durabilidad en cada uso.</p>
-                </div>
-                <div class="benefit-card" data-reveal>
-                    <div class="benefit-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8 12l2 2 4-4"/></svg>
-                    </div>
-                    <h4>Cintura Ajustable</h4>
-                    <p>Cintura elástica con cordón para un ajuste perfecto a tu medida.</p>
-                </div>
-                <div class="benefit-card" data-reveal>
-                    <div class="benefit-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-                    </div>
-                    <h4>Bolsillos Funcionales</h4>
-                    <p>Bolsillos laterales amplios para que lleves lo esencial con comodidad.</p>
-                </div>
-                <div class="benefit-card" data-reveal>
-                    <div class="benefit-icon">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                    </div>
-                    <h4>Costura Elegante</h4>
-                    <p>Costura frontal que estiliza tu silueta y le da un toque sofisticado.</p>
-                </div>
-            </div>
+            <img src="multimedia/imagen/material visual producto/detalle.jpg" alt="Detalle Jogger Premium EMSA" class="detalle-img">
         </div>
     </section>
 
@@ -592,6 +563,11 @@
             <div class="modal-header">
                 <h3 id="modal-title">Finaliza tu Pedido</h3>
                 <p>Completa el formulario y <strong>paga al recibir</strong> en la puerta de tu casa.</p>
+                <div class="modal-trust-strip">
+                    <span class="mts-item"><strong>&#128274;</strong> Pagas al recibir</span>
+                    <span class="mts-item"><strong>&#128666;</strong> Envío gratis</span>
+                    <span class="mts-item"><strong>&#8634;</strong> Cambios 7 días</span>
+                </div>
                 <div class="checkout-progress" id="checkout-progress" aria-label="Progreso del pedido">
                     <div class="cp-step active" data-step="1">
                         <span class="cp-circle">1</span>
@@ -686,8 +662,8 @@
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="neighborhood">Barrio *</label>
-                            <input type="text" id="neighborhood" name="neighborhood" placeholder="Nombre del barrio" required>
+                            <label for="neighborhood">Barrio <span class="optional">(opcional)</span></label>
+                            <input type="text" id="neighborhood" name="neighborhood" placeholder="Ayuda al repartidor a ubicarte">
                         </div>
                         <div class="form-group">
                             <label for="apto">Casa / Apto <span class="optional">(opcional)</span></label>
