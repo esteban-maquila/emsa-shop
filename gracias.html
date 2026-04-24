@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Gracias por tu pedido! | EMSA</title>
-    <meta name="description" content="Tu pedido EMSA ha sido recibido. En unos minutos te contactaremos por WhatsApp para confirmar.">
+    <title>¡Gracias por tu pedido! | DarEst</title>
+    <meta name="description" content="Tu pedido DarEst ha sido recibido. En unos minutos te contactaremos por WhatsApp para confirmar.">
     <meta name="robots" content="noindex, nofollow">
     <link rel="icon" type="image/png" href="multimedia/imagen/material visual tienda/ems_sin_fondo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -265,7 +265,7 @@
     <nav class="navbar">
         <div class="navbar-inner">
             <a href="index.html" aria-label="Volver al inicio">
-                <img src="multimedia/imagen/material visual tienda/ems_sin_fondo.png" alt="EMSA Logo" class="logo">
+                <img src="multimedia/imagen/material visual tienda/darest blanco.png" alt="DarEst Logo" class="logo">
             </a>
         </div>
     </nav>
@@ -285,7 +285,7 @@
             <div class="ty-order-box" id="ty-order-box">
                 <div class="ty-order-row">
                     <span>Producto</span>
-                    <span id="ty-product">Jogger Premium EMSA</span>
+                    <span id="ty-product">Jogger Premium DarEst</span>
                 </div>
                 <div class="ty-order-row">
                     <span>Promoción</span>
@@ -327,17 +327,17 @@
             const value = parseInt(params.get('value') || '0', 10);
             const units = parseInt(params.get('units') || '1', 10);
             const combo = params.get('combo') || '';
-            const orderId = params.get('oid') || ('emsa-' + Date.now());
+            const orderId = params.get('oid') || ('darest-' + Date.now());
 
             // Recupera la URL de WhatsApp guardada en el formulario y la asigna al botón
             try {
-                const waURL = sessionStorage.getItem('emsa_wa_url_' + orderId);
+                const waURL = sessionStorage.getItem('darest_wa_url_' + orderId);
                 if (waURL) {
                     const waLink = document.getElementById('ty-wa-link');
                     if (waLink) waLink.href = waURL;
                 }
                 // Personaliza el título con el nombre del cliente
-                const fname = sessionStorage.getItem('emsa_customer_name_' + orderId);
+                const fname = sessionStorage.getItem('darest_customer_name_' + orderId);
                 if (fname) {
                     const title = document.getElementById('ty-title');
                     if (title) title.textContent = '¡' + fname + ', tu pedido está casi listo!';
@@ -356,15 +356,15 @@
 
             // Dispara Meta Pixel Purchase con valor real
             // Anti-doble-disparo: marca el orderId en sessionStorage
-            const firedKey = 'emsa_purchase_fired_' + orderId;
+            const firedKey = 'darest_purchase_fired_' + orderId;
             if (value > 0 && !sessionStorage.getItem(firedKey)) {
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'Purchase', {
                         value: value,
                         currency: 'COP',
-                        content_name: 'Jogger Premium EMSA',
+                        content_name: 'Jogger Premium DarEst',
                         content_type: 'product',
-                        content_ids: ['EMSA-JOGGER-001'],
+                        content_ids: ['DAREST-JOGGER-001'],
                         num_items: units,
                         order_id: orderId
                     });

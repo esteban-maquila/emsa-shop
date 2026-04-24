@@ -1,5 +1,5 @@
 /* ==========================================================
-   EMSA — Landing Page Script
+   DarEst — Landing Page Script
 
    ╔══════════════════════════════════════════════════════════╗
    ║  CONFIGURACIÓN FÁCIL DE EDITAR                          ║
@@ -16,7 +16,7 @@ const WHATSAPP_NUMBER = '573234933812';
 const WEB3FORMS_KEY = 'ad6aaa69-682e-490d-823d-3bc00b62a3c5';
 
 // ─── NOMBRE DEL PRODUCTO ───────────────────────────────────
-const PRODUCT_NAME = 'Jogger Premium EMSA';
+const PRODUCT_NAME = 'Jogger Premium DarEst';
 
 // ─── PRECIOS Y COMBOS ──────────────────────────────────────
 // Modifica aquí los precios de cada combo.
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Persiste en localStorage por 12 horas. Al llegar a cero,
 // se reinicia automáticamente para no romper la oferta.
 const COUNTDOWN_DURATION_MS = 12 * 60 * 60 * 1000; // 12h
-const COUNTDOWN_KEY = 'emsa_offer_end_v1';
+const COUNTDOWN_KEY = 'darest_offer_end_v1';
 
 function initCountdown() {
     const h = document.getElementById('cd-h');
@@ -597,7 +597,7 @@ function initBundles() {
                 fbq('track', 'AddToCart', {
                     content_name: PRODUCT_NAME,
                     content_type: 'product',
-                    content_ids: ['EMSA-JOGGER-001'],
+                    content_ids: ['DAREST-JOGGER-001'],
                     currency: 'COP',
                     value: combo.price,
                     num_items: combo.units
@@ -900,8 +900,8 @@ function initModal() {
             // ─── Send to Web3Forms ─────────────────────────
             const formData = {
                 access_key: WEB3FORMS_KEY,
-                subject: `Nuevo pedido EMSA — ${combo.label} — ${fname} ${lname}`,
-                from_name: 'EMSA Tienda Online',
+                subject: `Nuevo pedido DarEst — ${combo.label} — ${fname} ${lname}`,
+                from_name: 'DarEst Tienda Online',
                 Producto: PRODUCT_NAME,
                 Promocion: `${combo.label} — ${formatCOP(combo.price)}`,
                 Precio_anterior: formatCOP(combo.oldPrice),
@@ -939,7 +939,7 @@ function initModal() {
             }
 
             // ─── Construir URL de WhatsApp (no se abre aquí) ──
-            const msg = `¡Hola EMSA! Quiero confirmar mi pedido:
+            const msg = `¡Hola DarEst! Quiero confirmar mi pedido:
 
 *${PRODUCT_NAME}*
 Promoción: ${combo.label} — ${formatCOP(combo.price)}${sizesInfo}
@@ -958,10 +958,10 @@ Pago contra entrega. ¡Gracias!`;
             // ─── Guardar URL de WhatsApp para gracias.html ──
             // Usamos sessionStorage en vez de query params porque el mensaje
             // de WhatsApp puede ser largo y los URL tienen límites.
-            const orderId = 'emsa-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+            const orderId = 'darest-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
             try {
-                sessionStorage.setItem('emsa_wa_url_' + orderId, waURL);
-                sessionStorage.setItem('emsa_customer_name_' + orderId, fname);
+                sessionStorage.setItem('darest_wa_url_' + orderId, waURL);
+                sessionStorage.setItem('darest_customer_name_' + orderId, fname);
             } catch (_) { /* Safari modo privado */ }
 
             // ─── Redirigir a página de gracias ──────────────
@@ -1004,7 +1004,7 @@ function initWhatsApp() {
     const waBtn = $('#whatsapp-float');
     if (!waBtn) return;
 
-    const msg = `Hola EMSA, tengo una duda sobre el ${PRODUCT_NAME}`;
+    const msg = `Hola DarEst, tengo una duda sobre el ${PRODUCT_NAME}`;
     waBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 
     waBtn.addEventListener('click', () => {
