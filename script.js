@@ -165,8 +165,31 @@ document.addEventListener('DOMContentLoaded', () => {
     initSizeGuide();
     initLightbox();
     initCheckoutProgress();
+    initLazyVideos();
     updatePricingUI();
 });
+
+// ─── Lazy Video Loading ────────────────────────────────────
+function initLazyVideos() {
+    const videos = document.querySelectorAll('video[data-lazy-src]');
+    if (!videos.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const video = entry.target;
+            const src = video.dataset.lazySrc;
+            const source = document.createElement('source');
+            source.src = src;
+            source.type = 'video/mp4';
+            video.appendChild(source);
+            video.load();
+            observer.unobserve(video);
+        });
+    }, { rootMargin: '200px' });
+
+    videos.forEach(v => observer.observe(v));
+}
 
 // ─── Countdown Timer (urgencia de oferta) ──────────────────
 // Persiste en localStorage por 12 horas. Al llegar a cero,
