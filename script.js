@@ -593,6 +593,16 @@ function initBundles() {
             updatePricingUI();
             syncModalBundle();
             renderModalSizes();
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'AddToCart', {
+                    content_name: PRODUCT_NAME,
+                    content_type: 'product',
+                    content_ids: ['EMSA-JOGGER-001'],
+                    currency: 'COP',
+                    value: combo.price,
+                    num_items: combo.units
+                });
+            }
         });
 
         container.appendChild(card);
